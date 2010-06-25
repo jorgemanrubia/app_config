@@ -36,6 +36,13 @@ class AppConfigTest < Test::Unit::TestCase
     end
   end
   
+  def test_should_parse_yaml_with_nested_properties
+    test_config 'common' => {'a' => '1', 'b' => {'c' => 4} } do |file, hash|
+      config = AppConfig.new(file)
+      assert_equal config.b.c, 4
+    end
+  end
+  
   def test_should_override_params_with_given_section
     test_config 'common' => {'a' => '1', 'b' => '<%= 2 + 2 %>'}, 
                  'special' => {'a' => 1, 'b' => 5 } do |file, hash|

@@ -24,6 +24,10 @@
 #
 # The plugin app_config is responsible for loading the config files.
 
+require 'ostruct'
+require 'yaml'
+require 'erb'
+
 class AppConfig
   
   def initialize(file = nil)
@@ -62,10 +66,11 @@ class AppConfig
     end
   end
   
-  def method_missing(param)
-    param = param.to_s
-    if @params.key?(param)
-      @params[param]
+  def method_missing(method_symbol)
+    method_symbol_name = method_symbol.to_s
+    if @params.key?(method_symbol_name)
+      value = @params[method_symbol_name]
+      value.instance_of?(Hash) ? OpenStruct.new(value) : value
     else
       raise "Invalid AppConfig Parameter " + param
     end
