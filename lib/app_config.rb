@@ -68,12 +68,10 @@ class AppConfig
   
   def method_missing(method_symbol)
     method_symbol_name = method_symbol.to_s
-    if @params.key?(method_symbol_name)
-      value = @params[method_symbol_name]
-      value.instance_of?(Hash) ? OpenStruct.new(value) : value
-    else
-      raise "Invalid AppConfig Parameter " + param
-    end
+    raise "The configuration option '#{method_symbol_name}' was not defined" if !@params.key?(method_symbol_name)
+
+    value = @params[method_symbol_name]
+    value.instance_of?(Hash) ? OpenStruct.new(value) : value
   end
   
 end

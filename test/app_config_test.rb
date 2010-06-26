@@ -65,6 +65,16 @@ class AppConfigTest < Test::Unit::TestCase
     end    
   end
   
+  def test_should_raise_error_when_option_is_missing
+    test_config 'common' => {'a' => '1'} do |file, hash|
+      config = AppConfig.new(file)
+      assert_raise RuntimeError do
+        config.b
+      end
+    end
+    
+  end
+  
   def test_should_ovveride_params_with_another_file
     test_config({'common' => {'a' => '1', 'b' => '<%= 2 + 2 %>'}, 
                  'special' => {'b' => 5 }}, 'config') do |file1, hash1|
