@@ -67,11 +67,11 @@ class AppConfig
   end
   
   def method_missing(method_symbol)
-    method_symbol_name = method_symbol.to_s
-    raise "The configuration option '#{method_symbol_name}' was not defined" if !@params.key?(method_symbol_name)
+    option_name = method_symbol.to_s
+    raise "The configuration option '#{option_name}' was not defined" if !@params.key?(option_name)
 
-    value = @params[method_symbol_name]
-    value.instance_of?(Hash) ? OpenStruct.new(value) : value
+    option_value = @params[option_name]
+    option_value.instance_of?(Hash) ? OpenStruct.new(option_value) : option_value
   end
   
 end
